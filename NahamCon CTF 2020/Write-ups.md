@@ -1,5 +1,30 @@
-# Web
-## Agent 95
+##### Table of Contents
+- [Web](#web)
+  - [Agent 95](#agent95)
+  - [Localghost](#localghost)
+  - [Phphonebook](#phphonebook)
+  - [Official Business](#official-business)
+  - [Extraterrestrial](#extraterrestrial)
+  - [Rejected Sequel](#rejected-sequel)
+  - [Flag jokes](#flag-jokes)
+- [Scripting](#Scripting)
+  - [Rotten](#Rotten)
+- [Miscellaneous](#Miscellaneous)
+  - [Vortex](#Vortex)
+  - [Fake File](#Fake-File)
+  - [Alkatraz](#Alkatraz)
+- [Mobile](#Mobile)
+  - [Candroid](#Candroid)
+  - [Simple App](#Simple-App)
+- [Forensics](#Forensics)
+  - [Microsoft](#Microsoft)
+- [Steganography](#Steganography)
+  - [Ksteg](#Ksteg)
+  - [Doh](#Doh)
+<hr>
+
+# <a name="web"></a> Web
+## <a name="agent95"></a> Agent 95
 Points: 50
 
 #### Description
@@ -19,7 +44,7 @@ My guess is that we need to temper the User-Agent HTTP header with the value Win
 
 Flag: flag{user_agents_undercover}
 
-## Localghost
+## <a name="localghost"></a>Localghost
 Points: 75
 
 #### Description
@@ -37,7 +62,7 @@ Looking around the page there is nothing interesting, but reading again the desc
 
 Flag: JCTF{spoooooky_ghosts_in_storage}
 
-## Phphonebook
+## <a name="phphonebook"></a> Phphonebook
 Points: 100
 
 #### Description
@@ -68,7 +93,7 @@ Making a POST request to `http://jh2i.com:50002/phphonebook.php` with the body `
 
 Flag: flag{phon3_numb3r_3xtr4ct3d}
 
-## Official Business
+## <a name="official-business"></a> Official Business
 Points: 125
 
 #### Description
@@ -191,7 +216,7 @@ After adding the cookie with the value returned by `do_login` from our script we
 
 Flag: flag{did_this_even_pass_code_review} 
 
-## Extraterrestrial
+## <a name="extraterrestrial"></a> Extraterrestrial
 Points: 125
     
 #### Description
@@ -224,7 +249,7 @@ The payload `<?xml version="1.0"?><!DOCTYPE root [<!ENTITY test SYSTEM 'file:///
 
 Flag: flag{extraterrestrial_extra_entities}
    
- ## Rejected Sequel
+ ## <a name="rejected-sequel"></a> Rejected Sequel
  Points: 150
  
  #### Description
@@ -255,7 +280,7 @@ Payload | Information gained
 
 Flag: flag{at_least_this_sequel_got_published}
 
-## Flag jokes
+## <a name="flag-jokes"></a> Flag Jokes
 Points: 200
 
 #### Description
@@ -309,8 +334,8 @@ Paste this JWKS into a new file at the following location: https://enaa0ihj1uout
 
 Flag: flag{whoops_typo_shoulda_been_flag_jwks} 
  
- # Scripting
- ## Rotten
+ # <a name="Scripting"></a> Scripting
+ ## <a name="Rotten"></a> Rotten
  Points: 100
  
  #### Description
@@ -369,8 +394,8 @@ while True:
 
 Flag: flag{now_you_know_your_caesars}
 
-## Miscellaneous
-### Vortex
+## <a name="Miscellaneous"></a> Miscellaneous
+### <a name="Vortex"></a> Vortex
 Points: 75
 #### Description
 >Will you find the flag, or get lost in the vortex?
@@ -403,7 +428,7 @@ conn.close()
 
 Flag: flag{more_text_in_the_vortex}
 
-## Fake File
+## <a name="Fake-File"></a> Fake File
 Points: 100
 #### Description
 >Wait... where is the flag?
@@ -418,7 +443,7 @@ Connecting with netcat we get a bash. Poking around I couldn't find anything int
 
 Flag: flag{we_should_have_been_worried_about_u2k_not_y2k}
 
-## Alkatraz
+## <a name="Alkatraz"> Alkatraz
 Points: 100
 #### Description
 >We are so restricted here in Alkatraz. Can you help us break out?
@@ -437,8 +462,8 @@ We solve this by reading the file with bash scripting.
 
 Flag: flag{congrats_you_just_escaped_alkatraz}
 
-# Mobile
-## Candroid
+# <a name="Mobile"></a> Mobile
+## <a name="Candroid"></a> Candroid
 Points: 50
 #### Description
 >I think I can, I think I can!
@@ -452,7 +477,7 @@ We are given an apk file. I tried running strings on it and it gave me the flag.
 
 Flag: flag{4ndr0id_1s_3asy}
 
-## Simple App
+## <a name="Simple-App"></a> Simple App
 Points: 50
 #### Description
 >Here's a simple Android app. Can you get the flag?
@@ -466,8 +491,8 @@ We are given an apk file. I decompiled it using `apktool d simple-app.apk` and a
 
 Flag: flag{3asY_4ndr0id_r3vers1ng}
 
-# Forensics
-## Microsoft
+# <a name="Forensics"></a> Forensics
+## <a name="Microsoft"></a> Microsoft
 Points: 100
 #### Description
 >We have to use Microsoft Word at the office!? Oof...
@@ -480,8 +505,8 @@ We are given a .docx file. Running file we see that is a `Microsoft OOXML` file,
 
 Flag: flag{oof_is_right_why_gfxdata_though}
 
-# Steganography
-## Ksteg
+# <a name="Steganography"></a> Steganography
+## <a name="Ksteg"></a> Ksteg
 Points: 50
 #### Description
 > This must be a typo.... it was kust one letter away!
@@ -497,7 +522,7 @@ Running `jsteg reveal luke.jpg` gave us the flag.
 
 Flag: flag{yeast_bit_steganography_oops_another_typo}
 
-## Doh
+## <a name="Doh"></a> Doh
 Points: 50
 #### Description
 >Doh! Stupid steganography...
