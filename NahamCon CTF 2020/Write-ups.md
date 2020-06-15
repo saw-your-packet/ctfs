@@ -94,8 +94,11 @@ def login():
         != b"hackshackshackshackshackshackshackshackshackshackshackshackshack"
     ):
         return abort(403)
-    return do_login(user, password, True)```
+    return do_login(user, password, True)
+```
+    
 As you can see, there's no way we can provide a passwod that will result in that hash. So it must be something else.
+
 ```python
 @app.route("/")
 def index():
@@ -306,3 +309,206 @@ Paste this JWKS into a new file at the following location: https://enaa0ihj1uout
 
 Flag: flag{whoops_typo_shoulda_been_flag_jwks} 
  
+ # Scripting
+ ## Rotten
+ Points: 100
+ 
+ #### Description
+>Ick, this salad doesn't taste too good!
+>
+>Connect with:
+>nc jh2i.com 50034
+
+ ### Solution
+ Running nc jh2i.com 50034 we are asked to return exactly the response.
+ > send back this line exactly. no flag here, just filler.
+ 
+ After doing so for a few times we get `jveu srtb kyzj czev vortkcp. ef wcrx yviv, aljk wzccvi.` which seems to be a variation of ROT13 or Ceaser cypher. Sending exactly this message back will close the connection, so we need to decode it first and only afterwards send it.
+ PLaying a liitle more I received the next message:
+ > fraq onpx guvf yvar rknpgyl. punenpgre 2 bs gur synt vf 'n'
+ 
+ Which decoded with ROT13 will become `send back this line exactly. character 2 of the flag is 'a'`. 
+ Nice, so we got an idea of how this works. We need to keep replying with the decoded line and extract the chars for building the flag on the way.
+ The implementation for the ROTN decoding function is from here: https://eddmann.com/posts/implementing-rot13-and-rot-n-caesar-ciphers-in-python/
+ 
+ My final script:
+ 
+```python
+import pwn
+import re
+from string import ascii_lowercase as lc, ascii_lowercase as uc
+
+def rot_alpha(n):
+    lookup = str.maketrans(lc + uc, lc[n:] + lc[:n] + uc[n:] + uc[:n])
+    return lambda s: s.translate(lookup)
+
+flag = dict()
+base_positoin = ascii_lowercase.find('s')
+r_position = re.compile('[0-9]{1,2}')
+r_letter = re.compile('\'.\'')
+
+conn = pwn.remote('jh2i.com', 50034)
+line = conn.recvline()
+conn.send(line)
+
+while True:
+    rotted = conn.recvline().decode('utf-8')
+    rot_letter = lc.find(rotted[0])
+    rot_number = base_positoin - rot_letter
+    reversed_line = rot_alpha(rot_number)(rotted)
+    if len(r_position.findall(reversed_line)) > 0:
+        key = r_position.findall(reversed_line)[0]
+        value = r_letter.findall(reversed_line)[0].replace('\'', '')
+        flag[key] = value
+    conn.send(reversed_line)
+```
+ 
+ Since I don't know th size of the flag I opted for running in debug mode and trying to build the flag after a few minutes.
+ 
+![image](https://user-images.githubusercontent.com/38787278/84624824-c477fe80-aeea-11ea-814e-ad9ceb4ce86d.png)
+
+Flag: flag{now_you_know_your_caesars}
+
+## Miscellaneous
+### Vortex
+Points: 75
+#### Description
+>Will you find the flag, or get lost in the vortex?
+>
+>Connect here:
+>nc jh2i.com 50017
+
+### Solution
+Connecting with netcat we get a lot of garbage. I let it connected for 1 minute and I received in continue chunk of bytes. So, my guess is that we need to find the flag in all that mess.
+
+This small script will do the job:
+
+```python
+import pwn
+
+conn = pwn.remote('jh2i.com', 50017)
+line = b''
+
+while True:
+    if b'flag' in line:
+        print(line)
+        break
+
+    line = conn.recvline()
+
+conn.close()
+```
+
+![image](https://user-images.githubusercontent.com/38787278/84625380-d017f500-aeeb-11ea-9154-43b1ff2fa6b3.png)
+
+Flag: flag{more_text_in_the_vortex}
+
+## Fake File
+Points: 100
+#### Description
+>Wait... where is the flag?
+>
+>Connect here:
+>nc jh2i.com 50026
+
+### Solution
+Connecting with netcat we get a bash. Poking around I couldn't find anything interesting so I went with `grep -r flag{ /` and we find the flag in `/home/user/..`.
+
+![image](https://user-images.githubusercontent.com/38787278/84625748-8e3b7e80-aeec-11ea-8b03-5e78b8d074fc.png)
+
+Flag: flag{we_should_have_been_worried_about_u2k_not_y2k}
+
+## Alkatraz
+Points: 100
+#### Description
+>We are so restricted here in Alkatraz. Can you help us break out?
+>
+>Connect here:
+>nc jh2i.com 50024
+
+### Solution
+Connecting with netcat we get a bash, but we only have access to `ls` command. We are also restricted to run commands if `/` is in theirs names.
+
+![image](https://user-images.githubusercontent.com/38787278/84625985-f38f6f80-aeec-11ea-8e23-6c16e6bc5899.png)
+
+We solve this by reading the file with bash scripting.
+
+![image](https://user-images.githubusercontent.com/38787278/84626065-1de12d00-aeed-11ea-9d0c-addc9d0ea338.png)
+
+Flag: flag{congrats_you_just_escaped_alkatraz}
+
+# Mobile
+## Candroid
+Points: 50
+#### Description
+>I think I can, I think I can!
+>
+>Download the file below.
+
+### Solution
+We are given an apk file. I tried running strings on it and it gave me the flag.
+
+![image](https://user-images.githubusercontent.com/38787278/84626592-08b8ce00-aeee-11ea-9401-fe1cff01cbf9.png)
+
+Flag: flag{4ndr0id_1s_3asy}
+
+## Simple App
+Points: 50
+#### Description
+>Here's a simple Android app. Can you get the flag?
+>
+>Download the file below.
+
+### Solution
+We are given an apk file. I decompiled it using `apktool d simple-app.apk` and after that I ran `grep -r flag{ .` and got the flag.
+
+![image](https://user-images.githubusercontent.com/38787278/84626827-7f55cb80-aeee-11ea-98e1-2aae86b4f97a.png)
+
+Flag: flag{3asY_4ndr0id_r3vers1ng}
+
+# Forensics
+## Microsoft
+Points: 100
+#### Description
+>We have to use Microsoft Word at the office!? Oof...
+>
+>Download the file below.
+
+### Solution
+We are given a .docx file. Running file we see that is a `Microsoft OOXML` file, so nothing interesting. We try running binwalk to see if there are hidden files inside. We are in luck, there are. Now we run `grep -r flag .` inside the extracted directory and we get the flag:
+>./src/oof.txt:Sed eget sem mi. Nunc ornare tincidunt nulla quis imperdiet. Donec quis dignissim lorem, vel dictum felis. Morbi blandit dapibus lorem nec blandit. Pellentesque ornare auctor est, vitae ultrices nulla efficitur quis. *flag{oof_is_right_why_gfxdata_though}* Morbi vel velit vel sem malesuada volutpat interdum ut elit. Duis orci nisl, suscipit non maximus sit amet, consectetur at diam. Vestibulum cursus odio vitae eros mollis sodales. Ut scelerisque magna diam, sit amet porttitor massa tincidunt tempus. Vivamus libero nulla, facilisis id faucibus sit amet, ultricies non dolor. Maecenas ornare viverra dui, nec vestibulum nisl pretium id. Nam fringilla maximus quam non porttitor. Curabitur eget ultricies metus. Nunc hendrerit dolor non nulla volutpat sollicitudin. Suspendisse hendrerit odio nec luctus venenatis. Nullam lobortis fringilla aliquam.
+
+Flag: flag{oof_is_right_why_gfxdata_though}
+
+# Steganography
+## Ksteg
+Points: 50
+#### Description
+> This must be a typo.... it was kust one letter away!
+>
+>Download the file below.
+
+### Solution
+We are given a jpg file. I tried running some tools, but nothing was working. Reading again the description I see that they misspelled `just` by writing `kust`. I also thought that the title challenge was the tool that was used, but I couldn't find it. Putting it all togheter, the tool must be called `jsteg`, not `ksteg`.
+This is the repository of the tool: https://github.com/lukechampine/jsteg
+Running `jsteg reveal luke.jpg` gave us the flag.
+
+![image](https://user-images.githubusercontent.com/38787278/84628090-b4fbb400-aef0-11ea-9557-62b5ee614292.png)
+
+Flag: flag{yeast_bit_steganography_oops_another_typo}
+
+## Doh
+Points: 50
+#### Description
+>Doh! Stupid steganography...
+>
+>Note, this flag is not in the usual format.
+>
+>Download the file below.
+
+### Solution
+We are given a jpg file. We try running steghide to extract whatever might be hidden. First, we try it without a password. We're in luck. Steghide extracted the `flag.txt` file.
+
+![image](https://user-images.githubusercontent.com/38787278/84628410-3eab8180-aef1-11ea-8bda-0bf27152a5bc.png)
+
+Flag: JCTF{an_annoyed_grunt}
