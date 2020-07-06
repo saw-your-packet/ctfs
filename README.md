@@ -18,8 +18,16 @@ Place: 62
 
 #### redpwnCTF 2020
 
-Ponts: 2542.0000
+Points: 2542.0000
 
 Place: 387
 
 [Write-ups](https://github.com/saw-your-packet/ctfs/blob/master/redpwnCTF%202020/Write-ups.md)
+
+#### ASIS CTF Quals 2020
+
+Points: 153.000
+
+Place: 136
+
+[Write-ups](https://github.com/saw-your-packet/ctfs/blob/master/ASIS%20CTF%20Quals%202020/Write-ups.md)
