@@ -8,6 +8,8 @@
     - [Addition](#addition)
 - [Forensics](#forensics)
     - [On the spectrum](#on-the-spectrum)
+- [Crypto](#crypto)
+    - [rot-i](#rot-i)
 - [Reversing](#reversing)
     - [Formatting](#formatting)
 
