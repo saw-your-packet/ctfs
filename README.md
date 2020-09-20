@@ -26,8 +26,16 @@ Place: 387
 
 #### ASIS CTF Quals 2020
 
-Points: 153.000
+Points: 153.0000
 
 Place: 136
 
 [Write-ups](https://github.com/saw-your-packet/ctfs/blob/master/ASIS%20CTF%20Quals%202020/Write-ups.md)
+
+#### DownUnderCTF
+
+Points: 1020.0000
+
+Place: 333
+
+[Write-ups](https://github.com/saw-your-packet/ctfs/blob/master/DownUnderCTF/Write-ups.md)
