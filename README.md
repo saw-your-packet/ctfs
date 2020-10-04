@@ -1,6 +1,10 @@
 # CTF competitions
 This repository contains write-ups of the challenges that I solved during the mentioned competitions. Below you can find the overall performance of the team.
 ### 2020
+#### Warm-up CTF #1
+Organizer: cyberedu.ro
+
+[Write-ups](https://github.com/saw-your-packet/ctfs/blob/master/Warm-up%20CTF%20%231/Write-ups.md)
 #### DarkCTF
 Points: 5028.0000
 
